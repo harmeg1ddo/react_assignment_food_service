@@ -4,12 +4,16 @@ import { RestaurantSelect } from './RestaurantSelect';
 import { DishSelect } from './DishSelect';
 import { OrderReview } from './OrderReview';
 import { StepContainerBar } from './StepContainerBar';
+import { NavBottomBar } from './NavBottomBar';
+
+
+const allSteps=["MealCategory","RestaurantSelect","DishSelect","OrderReview"];
 
 export interface IStepHandlerProps {
 }
 
 export interface IStepHandlerState {
-  currentStep: string;
+  currentStepNum: number;
 }
 
 export default class StepHandler extends React.Component<IStepHandlerProps, IStepHandlerState> {
@@ -17,26 +21,28 @@ export default class StepHandler extends React.Component<IStepHandlerProps, ISte
     super(props);
 
     this.state = {
-      currentStep: "OrderReview"
+      currentStepNum: 0
     }
   }
 
-  currentStepUpdater = (stepName: string) => {
-    console.log("CurrentStep:::", stepName);
-    this.setState({
-      currentStep: stepName
-    });
+  updateStepNumber=(stepNum:number)=>{
+    var updatedStepNum:number=this.state.currentStepNum+stepNum;
+    updatedStepNum<0?updatedStepNum=0:updatedStepNum>(allSteps.length-1)?updatedStepNum=(allSteps.length-1):updatedStepNum=updatedStepNum;
+    console.log("updatedStepNum",updatedStepNum);
+    this.setState({currentStepNum:updatedStepNum});
   }
 
   public render() {
     return(
       <div id="stepHandler">
-        <StepContainerBar StepContainerBarButtonOnClick={(value:string)=>this.setState({currentStep:value})}/>
+        <StepContainerBar StepContainerBarButtonOnClick={(value:number)=>this.setState({currentStepNum:value})}/>
 
-        {this.state.currentStep==="MealCategory"?<MealCategory />:null}
-        {this.state.currentStep==="RestaurantSelect"?<RestaurantSelect/>:null}
-        {this.state.currentStep==="DishSelect"?<DishSelect/>:null}
-        {this.state.currentStep==="OrderReview"?<OrderReview />:null}
+        {allSteps[this.state.currentStepNum] ==="MealCategory"?<MealCategory />:null}
+        {allSteps[this.state.currentStepNum]==="RestaurantSelect"?<RestaurantSelect/>:null}
+        {allSteps[this.state.currentStepNum]==="DishSelect"?<DishSelect/>:null}
+        {allSteps[this.state.currentStepNum]==="OrderReview"?<OrderReview />:null}
+
+        <NavBottomBar NavBottomBarButtonOnClick={(value:number)=>{this.updateStepNumber(value)}} />
       </div>
     )
   }
