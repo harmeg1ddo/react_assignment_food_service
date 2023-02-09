@@ -3,7 +3,7 @@ import { MealCategory } from './MealCategory';
 import { RestaurantSelect } from './RestaurantSelect';
 import { DishSelect } from './DishSelect';
 import { OrderReview } from './OrderReview';
-import { Topbar } from './Topbar';
+import { StepContainerBar } from './StepContainerBar';
 
 export interface IStepHandlerProps {
 }
@@ -31,8 +31,8 @@ export default class StepHandler extends React.Component<IStepHandlerProps, ISte
   public render() {
     return(
       <div id="stepHandler">
-        <Topbar topbarButtonOnClick={(value:string)=>this.setState({currentStep:value})}/>
-        
+        <StepContainerBar StepContainerBarButtonOnClick={(value:string)=>this.setState({currentStep:value})}/>
+
         {this.state.currentStep==="MealCategory"?<MealCategory />:null}
         {this.state.currentStep==="RestaurantSelect"?<RestaurantSelect/>:null}
         {this.state.currentStep==="DishSelect"?<DishSelect/>:null}
